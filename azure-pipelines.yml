@@ -12,14 +12,9 @@ steps:
     workingDirectory: ''
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'assembleDebug'
-
-- task: copyFiles@2
-  inputs:
-   contents: '**/* .apk'
-   targetFolder: '$(build.artifactstagingDirectory)'
-
-- task: PublishBuildartifacts@1
-
+    tasks: 'assembleRelease'
