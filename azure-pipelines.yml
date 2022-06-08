@@ -11,15 +11,12 @@ variables:
 steps:
 - task: Gradle@2
   inputs:
+    workingDirectory: ''
     gradleWrapperFile: 'gradlew'
-    tasks: 'assembleRelease'
-    publishJUnitResults: true
-    testResultsFiles: '*'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
     gradleOptions: '-Xmx3072m'
-    sonarQubeRunAnalysis: false
-    spotBugsAnalysis: false
+    publishJUnitResults: false
+    testResultsFiles: '**'
+    tasks: 'assembleDebug'
 
 - task: AndroidSigning@2
   inputs:
