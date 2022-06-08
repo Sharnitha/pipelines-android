@@ -4,8 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/android
 
 pool:
-  name: Default
+  vmImage: 'ubuntu-latest'
 
+variables:
+- group: android-build-variables
 steps:
 - task: Gradle@2
   inputs:
@@ -18,3 +20,27 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleRelease'
+
+- task: AndroidSigning@2
+  inputs:
+    apkFiles: '**/*.apk'
+    jarsign: true
+    jarsignerKeystoreFile: 'production.keystore'
+    jarsignerKeystorePassword: '$(keystore.password)'
+    jarsignerKeystoreAlias: '$(key.alias)'
+    jarsignerKeyPassword: '$(key.password)'
+    zipalign: false
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.apk'
+    targetFolder: '$(build.artifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+
+- task: AppCenterDistribute@1
+  inputs:
+    serverEndpoint: 'Sharnitha_Appcenter'
+    appSlug: 'https://appcenter.ms/orgs/Sharnithadevops/apps/Sharnitha-Android'
+    appFile: '$(Build.SourcesDirectory)'
+    
+     
